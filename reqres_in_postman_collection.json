@@ -1,0 +1,209 @@
+{
+	"info": {
+		"_postman_id": "641a4bf3-2b16-4a45-bc54-bb7a228d4bbe",
+		"name": "reqres.in",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20911429"
+	},
+	"item": [
+		{
+			"name": "LIST USERS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is OK\", function () {\r",
+							"    pm.response.to.have.status('OK');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"response must be with Body\", function () {\r",
+							"    pm.response.to.be.withBody;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"response must be json\", function () {\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Headers have Cache-Control\", function () {\r",
+							"       pm.expect(pm.response.to.have.header(\"Cache-Control\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Cache-Control include 14400\", function () {\r",
+							"        pm.expect(pm.response.headers.get(\"Cache-Control\")).to.include(14400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body does not includes error\", function () {\r",
+							"    pm.expect(pm.response.text()).to.not.include(\"error\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body includes total_pages\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"total_pages\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"data is array\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data).to.be.a(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Key 'id' of data is number\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data[0].id).to.be.a(\"number\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Object of data includes arrea 'id'\", function () {\r",
+							"    pm.expect(pm.response.json().data[0]).to.include.keys('id');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"email includes @\", function () {\r",
+							"    pm.expect(pm.response.json().data[0].email).to.include('@');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Object of data includes arrea 'id','first_name','avatar'\", function () {\r",
+							"    pm.expect(pm.response.json().data[0]).to.have.any.keys('id','first_name','avatar');\r",
+							"});\r",
+							"\r",
+							"let arr = pm.response.json().data;\r",
+							"arr.forEach (function(e){\r",
+							"    let c = e.email;\r",
+							"    tests['Every email includes \"@\"'] = c.includes('@')  \r",
+							"})\r",
+							"arr.forEach (function(e){\r",
+							"    let c = e.last_name;\r",
+							"    tests['Every last_name is string'] = typeof(c) == 'string' \r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://reqres.in/api/users?page=1",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "REGISTER - SUCCESSFUL",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/register",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LOGIN - SUCCESSFUL",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"cityslicka\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/login",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set('username', jsonData.name);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"morpheus\",\r\n    \"job\": \"leader\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
